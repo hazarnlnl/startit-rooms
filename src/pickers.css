@@ -1,0 +1,87 @@
+/* Field button: same box as the Cargo TextField, icon and chevron always inside */
+.pk { position: relative; min-width: 0; }
+.pk__btn {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--c-surface);
+  font-size: 14.5px;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 200ms ease, transform 160ms var(--ease-out);
+}
+.pk__btn:active { transform: scale(0.985); }
+.pk[data-open] .pk__btn { box-shadow: inset 0 0 0 1px var(--c-surface-2), 0 0 0 3px color-mix(in oklab, var(--c-text) 8%, transparent); }
+.pk__icon { width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: var(--c-muted); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.pk__val { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pk__chev { width: 14px; height: 14px; flex-shrink: 0; fill: none; stroke: var(--c-muted); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: transform 200ms var(--ease-out); }
+.pk[data-open] .pk__chev { transform: rotate(180deg); }
+
+/* Popover: below the field, or above when there's no room */
+.pk__panel {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  top: calc(100% + 6px);
+  min-width: 100%;
+  padding: 6px;
+  border-radius: 14px;
+  background: var(--c-stage);
+  box-shadow: var(--c-shadow), 0 0 0 1px var(--c-seam);
+  transform-origin: 50% 0;
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms var(--ease-out), visibility 0s 120ms;
+}
+.pk[data-up] .pk__panel { top: auto; bottom: calc(100% + 6px); transform-origin: 50% 100%; transform: translateY(4px) scale(0.98); }
+.pk[data-open] .pk__panel { opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition: opacity 160ms ease, transform 200ms var(--ease-out); }
+
+/* List (times, rooms) */
+.pk__list { max-height: 216px; overflow-y: auto; overscroll-behavior: contain; outline: none; }
+.pk__opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 36px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; cursor: pointer; }
+.pk__opt[data-active] { background: var(--c-surface); }
+.pk__list:focus-visible .pk__opt[data-active] { box-shadow: inset 0 0 0 1px var(--c-surface-2); }
+.pk__check { width: 14px; height: 14px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: scale(0.5); transition: opacity 160ms ease, transform 200ms var(--ease-out); }
+.pk__opt[aria-selected="true"] { font-weight: 500; }
+.pk__opt[aria-selected="true"] .pk__check { opacity: 1; transform: none; }
+
+/* Calendar (single day), after Cargo's DateRange */
+.pk__panel--cal { width: 280px; padding: 10px; }
+.dp__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 2px 6px 6px; overflow: hidden; }
+.dp__month { font-size: 14px; font-weight: 600; }
+.dp__nav { display: flex; gap: 2px; }
+.dp__nav button { width: 30px; height: 30px; display: grid; place-items: center; border: 0; border-radius: 8px; background: transparent; color: var(--c-text); cursor: pointer; transition: background-color 150ms ease, opacity 150ms ease; }
+.dp__nav button:disabled { opacity: 0.3; cursor: default; }
+.dp__nav svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) and (pointer: fine) { .dp__nav button:not(:disabled):hover { background: var(--c-surface); } }
+.dp__dow, .dp__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.dp__dow span { text-align: center; font-size: 11.5px; color: var(--c-muted); padding-bottom: 4px; }
+.dp__grid { grid-auto-rows: 36px; outline: none; border-radius: 10px; }
+.dp__grid[data-dir="1"], .dp__month[data-dir="1"] { animation: dp-next 260ms var(--ease-out); }
+.dp__grid[data-dir="-1"], .dp__month[data-dir="-1"] { animation: dp-prev 260ms var(--ease-out); }
+@keyframes dp-next { from { opacity: 0; transform: translateX(14px); } }
+@keyframes dp-prev { from { opacity: 0; transform: translateX(-14px); } }
+.dp__day { padding: 0; border: 0; background: transparent; color: var(--c-text); font-size: 13px; font-variant-numeric: tabular-nums; cursor: pointer; }
+.dp__day:disabled { color: var(--c-muted); opacity: 0.35; cursor: default; }
+.dp__day span { display: grid; place-items: center; width: 32px; height: 32px; margin: 0 auto; border-radius: 9px; transition: background-color 120ms ease, color 120ms ease; }
+.dp__day[data-selected] span { background: var(--c-inverse-bg); color: var(--c-inverse-fg); font-weight: 600; }
+.dp__day[data-today]:not([data-selected]) span { box-shadow: inset 0 0 0 1px var(--c-muted); }
+.dp__grid:focus-visible .dp__day[data-focus] span { box-shadow: 0 0 0 2px var(--c-text); }
+@media (hover: hover) and (pointer: fine) { .dp__day:not(:disabled):not([data-selected]):hover span { background: var(--c-surface); } }
+.dp__foot { display: flex; justify-content: flex-end; padding-top: 6px; }
+.dp__today { height: 30px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--c-surface); font-size: 13px; font-weight: 500; cursor: pointer; }
+.dp__today:disabled { opacity: 0.4; cursor: default; }
+
+/* Panels that scroll must let an open picker overflow them */
+.sheet:has(.pk[data-open]), .dialog:has(.pk[data-open]) { overflow: visible; }
+
+@media (prefers-reduced-motion: reduce) { .dp__grid, .dp__month { animation: none !important; } .pk__panel { transform: none !important; } }

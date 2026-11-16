@@ -1,0 +1,63 @@
+.ut {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 48px;
+  padding: 0 8px 0 18px;
+  border-radius: 14px;
+  background: var(--c-inverse-bg);
+  color: var(--c-inverse-fg);
+  box-shadow: var(--c-shadow);
+  font-size: 14px;
+  overflow: hidden;
+  /* enter: rises from below. exit is quicker and shorter than the enter */
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 160ms ease, transform 160ms var(--ease-out);
+}
+.ut[data-visible] { opacity: 1; transform: none; transition: opacity 260ms ease, transform 360ms var(--ease-drawer); }
+
+.ut__msg { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; animation: ut-in 240ms var(--ease-out); }
+@keyframes ut-in { from { opacity: 0; filter: blur(4px); } to { opacity: 1; filter: blur(0); } }
+.ut[data-undone] { padding-right: 18px; }
+.ut__check { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.ut__action {
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 9px;
+  background: color-mix(in oklab, var(--c-inverse-fg) 14%, transparent);
+  color: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 160ms var(--ease-out);
+}
+.ut__action:active { transform: scale(0.96); }
+@media (hover: hover) and (pointer: fine) {
+  .ut__action:hover { background: color-mix(in oklab, var(--c-inverse-fg) 22%, transparent); }
+}
+
+/* The time left: a hairline that drains left to right. Linear, because it's a clock. */
+.ut__drain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: color-mix(in oklab, var(--c-inverse-fg) 45%, transparent);
+  transform-origin: left;
+  animation-name: ut-drain;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@keyframes ut-drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+/* Paused while you're reading it, or while the tab is in the background */
+.ut:hover .ut__drain, .ut:focus-within .ut__drain, .ut[data-paused] .ut__drain { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ut, .ut[data-visible] { transform: none; }
+  .ut__msg { animation: none; }
+}
+

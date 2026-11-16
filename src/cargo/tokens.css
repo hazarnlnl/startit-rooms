@@ -1,0 +1,82 @@
+/* Neutral frame for the components. Tokens are shared by every block.
+   Theme: follows the system, unless <html data-theme="light|dark"> forces one (the dev switch sets it). */
+:root {
+  color-scheme: light;
+  /* Pure neutral greys (no blue cast), kept light so surfaces read like clean paper on white */
+  --c-bg: #f7f7f7;
+  --c-stage: #ffffff;
+  --c-surface: #f6f6f6;
+  --c-surface-2: #ececec;
+  --c-text: #171717;
+  --c-muted: #6b6b6b;
+  --c-inverse-bg: #171717;
+  --c-inverse-fg: #fafafa;
+  --c-shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 6px 16px -6px rgb(0 0 0 / 0.1);
+  --c-focus: 0 0 0 2px var(--c-stage), 0 0 0 4px #a3a3a3;
+  --c-seam: #ebebeb;
+
+  /* Accents: deeper and more saturated on white so they don't wash out */
+  --c-green: #1d9a5f;
+  --c-red: #dc3b40;
+  --c-amber: #e08600;
+  --c-blue: #3a6be0;
+  --c-violet: #5b5bd6;
+  /* Tinted backgrounds mix their accent this much harder in light mode */
+  --c-tint-k: 1.6;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+/* Dark: when the system is dark (and light isn't forced)… */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --c-bg: #09090b;
+    --c-stage: #131315;
+    --c-surface: #1c1c1f;
+    --c-surface-2: #27272b;
+    --c-text: #f4f4f5;
+    --c-muted: #8b8b93;
+    --c-inverse-bg: #f4f4f5;
+    --c-inverse-fg: #09090b;
+    --c-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 16px -4px rgb(0 0 0 / 0.5);
+    --c-focus: 0 0 0 2px var(--c-stage), 0 0 0 4px #71717a;
+    --c-seam: #26262a;
+    --c-green: #30a46c;
+    --c-red: #e5484d;
+    --c-amber: #f59e0b;
+    --c-blue: #5b8def;
+    --c-violet: #6e78d8;
+    --c-tint-k: 1;
+  }
+}
+/* …or when dark is forced. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg: #09090b;
+  --c-stage: #131315;
+  --c-surface: #1c1c1f;
+  --c-surface-2: #27272b;
+  --c-text: #f4f4f5;
+  --c-muted: #8b8b93;
+  --c-inverse-bg: #f4f4f5;
+  --c-inverse-fg: #09090b;
+  --c-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 16px -4px rgb(0 0 0 / 0.5);
+  --c-focus: 0 0 0 2px var(--c-stage), 0 0 0 4px #71717a;
+  --c-seam: #26262a;
+  --c-green: #30a46c;
+  --c-red: #e5484d;
+  --c-amber: #f59e0b;
+  --c-blue: #5b8def;
+  --c-violet: #6e78d8;
+  --c-tint-k: 1;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; overscroll-behavior: none; }
+body { background: var(--c-bg); color: var(--c-text); -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: none; box-shadow: var(--c-focus); }
+

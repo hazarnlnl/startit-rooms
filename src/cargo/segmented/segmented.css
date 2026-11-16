@@ -1,0 +1,38 @@
+.seg {
+  position: relative;
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--c-surface);
+}
+.seg__opt {
+  position: relative;
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--c-muted);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  button.seg__opt:hover { color: var(--c-text); }
+}
+.seg__active {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  padding: 4px;
+  border-radius: inherit;
+  background: var(--c-inverse-bg);
+  pointer-events: none;
+  transition: clip-path 320ms var(--ease-out);
+}
+.seg__active .seg__opt { color: var(--c-inverse-fg); }
+@media (prefers-reduced-motion: reduce) { .seg__active { transition: none; } }

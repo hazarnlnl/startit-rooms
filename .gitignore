@@ -1,0 +1,7 @@
+node_modules
+dist
+# Booking data stays on the server: it holds people's names and emails
+data/
+.claude/
+.DS_Store
+*.log
